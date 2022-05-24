@@ -16,3 +16,5 @@ export const getColorTemperature = (temp) => {
   else if (temp < 30) return 'bg-orange-300' // orange
   else return 'bg-red-500' // red
 }
+
+export const getHourFormatted = (hour) => (hour < 10 ? `0${hour}` : hour)

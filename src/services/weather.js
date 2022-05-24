@@ -102,5 +102,3 @@ export const getForecast = async (query = DEFAULT_QUERY) => {
 
   return { forecastHistoricalData, currentDayForecast }
 }
-
-export const getHourFormatted = (hour) => (hour < 10 ? `0${hour}` : hour)

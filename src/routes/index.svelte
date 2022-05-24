@@ -1,7 +1,7 @@
 <script>
   import '../app.css'
-  import { getColorTemperature, getMeaningByUvIndex } from '../utils/weather'
-  import { getAstronomy, getForecast, getHourFormatted, getWeatherFrom } from '../services/weather'
+  import { getColorTemperature, getHourFormatted, getMeaningByUvIndex } from '../utils/weather'
+  import { getAstronomy, getForecast, getWeatherFrom } from '../services/weather'
   const weatherPromise = getWeatherFrom('Trujillo')
   const astronomyPromise = getAstronomy('Trujillo')
   const forecastPromise = getForecast('Trujillo')
