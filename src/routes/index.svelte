@@ -151,7 +151,7 @@
     </a>
     <a
       class="ring-gray-900 p-2 rounded-lg flex text-xs flex-col items-center gap-1 transition hover:text-yellow-300 text-white"
-      href="/leaderboard"
+      href="/search"
     >
       <svg height="21" viewBox="0 0 21 21" width="21" xmlns="http://www.w3.org/2000/svg"
         ><g
