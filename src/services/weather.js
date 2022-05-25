@@ -102,3 +102,9 @@ export const getForecast = async (query = DEFAULT_QUERY) => {
 
   return { forecastHistoricalData, currentDayForecast }
 }
+
+export const searchCity = async (query = '') => {
+  const response = await fetch(`${RAPIDAPI_HOST}search.json?q=${query}`, FETCH_OPTIONS)
+  const data = await response.json()
+  return data
+}
