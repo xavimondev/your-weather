@@ -1,5 +1,7 @@
 <script>
   import '../app.css'
+  import PreviewCity from '../components/PreviewCity.svelte'
+  import { fade, fly } from 'svelte/transition'
   import { getAstronomy, getForecast, getWeatherFrom, searchCity } from '../services/weather'
   const classes =
     'mb-2 py-1 px-2 text-sm cursor-pointer font-medium hover:bg-slate-200 hover:rounded-md'
@@ -8,6 +10,11 @@
   let searchInput
   // List of cities
   let filteredCities = []
+  // Result of promises
+  let weather
+  let astronomy
+  let forecast
+  let isVisible = false
 
   const handleChange = async () => {
     if (city.length > 2) {
@@ -28,11 +35,13 @@
     filteredCities = []
     hiLiteIndex = null
     searchInput.focus()
+    isVisible = true
     // console.log(citySelected)
-    const weather = await getWeatherFrom(`${lat},${lon}`)
-    const astronomy = await getAstronomy(`${lat},${lon}`)
-    const forecast = await getForecast(`${lat},${lon}`)
-    console.log({ weather, astronomy, forecast })
+    weather = await getWeatherFrom(`${lat},${lon}`)
+    astronomy = await getAstronomy(`${lat},${lon}`)
+    forecast = await getForecast(`${lat},${lon}`)
+
+    // console.log({ weather, astronomy, forecast })
   }
 
   /* Navigating over the list of countries using keyboard */
@@ -124,3 +133,7 @@
     </a>
   </section>
 </main>
+
+{#if isVisible}
+  <PreviewCity {weather} {forecast} {astronomy} />
+{/if}
