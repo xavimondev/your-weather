@@ -1,16 +1,7 @@
 import { getKeyFormatted } from '../utils/getKeyFormatted'
+import { DEFAULT_QUERY, FETCH_OPTIONS, RAPIDAPI_HOST } from '../constants'
+
 import { searchCache, updateCache } from './cache'
-
-const FETCH_OPTIONS = {
-  method: 'GET',
-  headers: {
-    'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com',
-    'X-RapidAPI-Key': import.meta.env.VITE_RAPID_KEY
-  }
-}
-
-const DEFAULT_QUERY = 'auto:ip'
-const RAPIDAPI_HOST = 'https://weatherapi-com.p.rapidapi.com/'
 
 export const getWeatherFrom = async (query = DEFAULT_QUERY) => {
   const response = await fetch(`${RAPIDAPI_HOST}current.json?q=${query}`, FETCH_OPTIONS)

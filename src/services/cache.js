@@ -1,4 +1,4 @@
-const ENDPOINT_API = '/api/weather'
+import { ENDPOINT_API } from '../constants'
 
 export const updateCache = async (data) => {
   const OPTIONS_FETCH = {
