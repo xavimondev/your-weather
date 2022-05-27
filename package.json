@@ -26,5 +26,8 @@
     "svelte-preprocess": "^4.10.6",
     "tailwindcss": "^3.0.24"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@upstash/redis": "1.4.0"
+  }
 }

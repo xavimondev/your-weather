@@ -3,8 +3,8 @@
   import { getColorTemperature, getHourFormatted, getMeaningByUvIndex } from '../utils/weather'
   import { getAstronomy, getForecast, getWeatherFrom } from '../services/weather'
   const weatherPromise = getWeatherFrom('Trujillo')
-  const astronomyPromise = getAstronomy('Trujillo')
-  const forecastPromise = getForecast('Trujillo')
+  // const astronomyPromise = getAstronomy('Trujillo')
+  // const forecastPromise = getForecast('Trujillo')
 </script>
 
 <svelte:head>
@@ -15,9 +15,9 @@
   <main class="max-h-screen mx-5 my-12">
     <!-- Today data -->
     <section class="text-center mt-6 flex flex-col gap-4 mb-10">
-      <h2 class="text-3xl">{weather.cityName}</h2>
-      <h1 class="text-6xl">{weather.temperature}º</h1>
-      <h4>{weather.condition}</h4>
+      <h2 class="text-3xl">{weather.info.cityName}</h2>
+      <h1 class="text-6xl">{weather.info.temperature}º</h1>
+      <h4>{weather.info.condition}</h4>
     </section>
     <!-- Hourly Forecast -->
     <section class="border-2 border-cyan-200 rounded-2xl p-4 mb-3">
@@ -25,19 +25,17 @@
         hourly forecast
       </header>
       <ul class="flex gap-5 overflow-x-scroll max-w-full">
-        {#await forecastPromise then forecast}
-          {#each forecast.currentDayForecast as { temp, icon, condition, hour }, i}
-            <li class="min-w-[64px] min-h-[110px]">
-              <ul class="text-center">
-                <li class="font-semibold">{i === 0 ? 'Now' : getHourFormatted(hour)}</li>
-                <li>
-                  <img src={icon} alt={condition} />
-                </li>
-                <li class="font-bold text-lg">{temp}º</li>
-              </ul>
-            </li>
-          {/each}
-        {/await}
+        {#each weather.forecast.currentDayForecast as { temp, icon, condition, hour }, i}
+          <li class="min-w-[64px] min-h-[110px]">
+            <ul class="text-center">
+              <li class="font-semibold">{i === 0 ? 'Now' : getHourFormatted(hour)}</li>
+              <li>
+                <img src={icon} alt={condition} />
+              </li>
+              <li class="font-bold text-lg">{temp}º</li>
+            </ul>
+          </li>
+        {/each}
       </ul>
     </section>
     <!-- 3 Day Forecast -->
@@ -46,23 +44,21 @@
         3-day-forecast
       </header>
       <div class="flex flex-col gap-4 divide-y divide-blue-200">
-        {#await forecastPromise then forecast}
-          {#each forecast.forecastHistoricalData as { date, icon, mintemp_c, maxtemp_c, temperatures }}
-            <div class="flex justify-between items-center w-full h-10">
-              <span class="font-semibold">{date}</span>
-              <img src={icon} width="48" height="48" alt="sunny" />
-              <div class="flex justify-between gap-1 items-center">
-                <span>{mintemp_c}º</span>
-                <div class="flex flex-row rounded-xl border border-t-gray-50">
-                  {#each temperatures as { temp }}
-                    <span class={`w-1 h-1 ${getColorTemperature(temp)}`} />
-                  {/each}
-                </div>
-                <span class="font-semibold">{maxtemp_c}º</span>
+        {#each weather.forecast.forecastHistoricalData as { date, icon, mintemp_c, maxtemp_c, temperatures }}
+          <div class="flex justify-between items-center w-full h-10">
+            <span class="font-semibold">{date}</span>
+            <img src={icon} width="48" height="48" alt="sunny" />
+            <div class="flex justify-between gap-1 items-center">
+              <span>{mintemp_c}º</span>
+              <div class="flex flex-row rounded-xl border border-t-gray-50">
+                {#each temperatures as { temp }}
+                  <span class={`w-1 h-1 ${getColorTemperature(temp)}`} />
+                {/each}
               </div>
+              <span class="font-semibold">{maxtemp_c}º</span>
             </div>
-          {/each}
-        {/await}
+          </div>
+        {/each}
       </div>
     </section>
     <!-- Other indicators-->
@@ -71,32 +67,30 @@
       <div class="border-2 border-cyan-200 rounded-2xl p-4">
         <header class="uppercase text-sm font-semibold mb-2 pb-1">uv index</header>
         <div class="">
-          <h1 class="font-bold text-2xl">{weather.uvindex}</h1>
-          <h2 class="font-semibold text-md">{getMeaningByUvIndex(weather.uvindex)}</h2>
+          <h1 class="font-bold text-2xl">{weather.info.uvindex}</h1>
+          <h2 class="font-semibold text-md">{getMeaningByUvIndex(weather.info.uvindex)}</h2>
         </div>
       </div>
       <!-- Sunset -->
       <div class="border-2 border-cyan-200 rounded-2xl p-4">
         <header class="uppercase text-sm font-semibold mb-2 pb-1">sunset</header>
         <div class="flex flex-col gap-3">
-          {#await astronomyPromise then astronomy}
-            <h1 class="font-bold text-2xl">{astronomy.sunset}</h1>
-            <h2 class="text-sm">Sunrise: {astronomy.sunrise}</h2>
-          {/await}
+          <h1 class="font-bold text-2xl">{weather.astronomy.sunset}</h1>
+          <h2 class="text-sm">Sunrise: {weather.astronomy.sunrise}</h2>
         </div>
       </div>
       <!-- Wind -->
       <div class="border-2 border-cyan-200 rounded-2xl p-4">
         <header class="uppercase text-sm font-semibold mb-2 pb-1">wind</header>
         <div class="">
-          <h1 class="font-bold text-2xl">{weather.wind} km/h</h1>
+          <h1 class="font-bold text-2xl">{weather.info.wind} km/h</h1>
         </div>
       </div>
       <!-- Precipitation -->
       <div class="border-2 border-cyan-200 rounded-2xl p-4">
         <header class="uppercase text-sm font-semibold mb-2 pb-1">precipitation</header>
         <div class="">
-          <h1 class="font-bold text-2xl">{weather.precipitation} mm</h1>
+          <h1 class="font-bold text-2xl">{weather.info.precipitation} mm</h1>
           <h2 class="font-semibold text-md">in last 24 hours</h2>
         </div>
       </div>
@@ -104,28 +98,28 @@
       <div class="border-2 border-cyan-200 rounded-2xl p-4">
         <header class="uppercase text-sm font-semibold mb-2 pb-1">feels like</header>
         <div class="">
-          <h1 class="font-bold text-2xl">{weather.feelslike}º</h1>
+          <h1 class="font-bold text-2xl">{weather.info.feelslike}º</h1>
         </div>
       </div>
       <!-- Humidity -->
       <div class="border-2 border-cyan-200 rounded-2xl p-4">
         <header class="uppercase text-sm font-semibold mb-2 pb-1">humidity</header>
         <div class="">
-          <h1 class="font-bold text-2xl">{weather.humidity}%</h1>
+          <h1 class="font-bold text-2xl">{weather.info.humidity}%</h1>
         </div>
       </div>
       <!-- Visibility -->
       <div class="border-2 border-cyan-200 rounded-2xl p-4">
         <header class="uppercase text-sm font-semibold mb-2 pb-1">visibility</header>
         <div class="">
-          <h1 class="font-bold text-2xl">{weather.visibility} km</h1>
+          <h1 class="font-bold text-2xl">{weather.info.visibility} km</h1>
         </div>
       </div>
       <!-- Pressure -->
       <div class="border-2 border-cyan-200 rounded-2xl p-4">
         <header class="uppercase text-sm font-semibold mb-4 pb-1">pressure</header>
         <div class="">
-          <h1 class="font-bold text-2xl">{weather.pressure} mb</h1>
+          <h1 class="font-bold text-2xl">{weather.info.pressure} mb</h1>
         </div>
       </div>
     </section>
