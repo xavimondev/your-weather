@@ -12,8 +12,8 @@
   let filteredCities = []
   // Result of promises
   let weather
-  let astronomy
-  let forecast
+  let astronomyData
+  let forecastData
   let isVisible = false
 
   const handleChange = async () => {
@@ -25,23 +25,25 @@
   }
 
   $: if (!city) {
-    // console.log('Cleaning array because there are not results')
     filteredCities = []
   }
 
-  const setInputValue = async (citySelected) => {
+  const getWeatherData = async (lat, lon) => {
+    const results = await getWeatherFrom(`${lat},${lon}`)
+    const { info, astronomy, forecast } = results
+    weather = info
+    astronomyData = astronomy
+    forecastData = forecast
+  }
+
+  const setInputValue = (citySelected) => {
     const { name, country, lat, lon } = citySelected
     city = `${name}, ${country}`
     filteredCities = []
     hiLiteIndex = null
     searchInput.focus()
     isVisible = true
-    // console.log(citySelected)
-    weather = await getWeatherFrom(`${lat},${lon}`)
-    astronomy = await getAstronomy(`${lat},${lon}`)
-    forecast = await getForecast(`${lat},${lon}`)
-
-    // console.log({ weather, astronomy, forecast })
+    getWeatherData(lat, lon)
   }
 
   /* Navigating over the list of countries using keyboard */
@@ -135,5 +137,5 @@
 </main>
 
 {#if isVisible}
-  <PreviewCity {weather} {forecast} {astronomy} />
+  <PreviewCity {weather} forecast={forecastData} astronomy={astronomyData} />
 {/if}
