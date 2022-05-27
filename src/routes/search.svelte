@@ -1,8 +1,43 @@
 <script>
   import '../app.css'
+  import { spring } from 'svelte/motion'
+  import { slide } from 'svelte/transition'
+  import { itrash } from '../icons'
+  import { myslide } from '../utils/myslide'
+  import { getWeatherFrom, searchCity } from '../services/weather'
   import PreviewCity from '../components/PreviewCity.svelte'
-  import { fade, fly } from 'svelte/transition'
-  import { getAstronomy, getForecast, getWeatherFrom, searchCity } from '../services/weather'
+  import SvgIcon from '../components/SvgIcon.svelte'
+  /* Animations*/
+  let coords = spring({ x: 0, y: 0 }, { stiffness: 0.05, damping: 0.5 })
+  // let selected
+  let current
+  let w
+
+  function handleSlideStart() {
+    coords.stiffness = coords.damping = 1
+  }
+
+  function handleSlideMove(event) {
+    coords.update(($coords) => ({
+      x: $coords.x + event.detail.dx,
+      y: $coords.y + event.detail.dy
+    }))
+  }
+
+  function handleSlideEnd(event) {
+    coords.stiffness = 0.05
+    coords.damping = 0.5
+    coords.set({ x: 0, y: 0 })
+  }
+
+  function deleteContact(id) {
+    coords.set({ x: 0, y: 0 }, { hard: true })
+  }
+
+  $: side = $coords.x >= (w / 2) * 1 ? 'left' : 'right'
+  $: side === 'left' ? deleteContact(current) : ''
+
+  /* Data */
   const classes =
     'mb-2 py-1 px-2 text-sm cursor-pointer font-medium hover:bg-slate-200 hover:rounded-md'
   let city = ''
@@ -112,9 +147,24 @@
     </div>
   </section>
   <!-- Favorites -->
-  <section class="w-full">
-    <a href="/">
-      <div class="border-2 border-cyan-200 rounded-2xl p-3 mb-3 h-32">
+  <section class="w-full flex flex-col gap-6">
+    <div
+      out:slide={{ duration: 500 }}
+      class="relative rounded-2xl flex items-center bg-gradient-to-r from-red-500 to-pink-400 w-full h-28 cursor-grab"
+    >
+      <SvgIcon d={itrash} />
+      <div
+        class="absolute w-full h-full border-2 rounded-2xl bg-slate-100 p-3"
+        bind:offsetWidth={w}
+        use:myslide
+        on:slidestart={() => {
+          // selected = index
+          // current = contact.id
+          handleSlideStart
+        }}
+        on:slidemove={handleSlideMove}
+        on:slideend={handleSlideEnd}
+      >
         <div class="flex flex-col gap-4 items-center w-full">
           <div class="flex flex-row justify-between w-full">
             <div>
@@ -132,7 +182,7 @@
           </div>
         </div>
       </div>
-    </a>
+    </div>
   </section>
 </main>
 
