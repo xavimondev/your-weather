@@ -55,7 +55,7 @@
   const handleChange = async () => {
     if (city.length > 2) {
       const response = await searchCity(city)
-      console.log(response)
+      // console.log(response)
       filteredCities = response
     }
   }
@@ -73,8 +73,8 @@
   }
 
   const setInputValue = (citySelected) => {
-    const { name, country, lat, lon } = citySelected
-    city = `${name}, ${country}`
+    const { name, region, country, lat, lon } = citySelected
+    city = `${name}, ${region}, ${country}`
     filteredCities = []
     hiLiteIndex = null
     searchInput.focus()
@@ -140,7 +140,7 @@
               class={`${classes} ${i === hiLiteIndex ? 'bg-slate-200' : ''}`}
               on:click={() => setInputValue(city)}
             >
-              {city.name}, {city.country}
+              {city.name}, {city.region}, {city.country}
             </li>
           {/each}
         </ul>
