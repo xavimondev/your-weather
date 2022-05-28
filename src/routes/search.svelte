@@ -64,8 +64,8 @@
     filteredCities = []
   }
 
-  const getDataWeatherSelected = async (lat, lon) => {
-    const results = await getWeatherFrom(`${lat},${lon}`)
+  const getDataWeatherSelected = async (cityName) => {
+    const results = await getWeatherFrom(cityName)
     const { info, astronomy, forecast } = results
     weather = info
     astronomyData = astronomy
@@ -73,13 +73,13 @@
   }
 
   const setInputValue = (citySelected) => {
-    const { name, region, country, lat, lon } = citySelected
+    const { name, region, country } = citySelected
     city = `${name}, ${region}, ${country}`
     filteredCities = []
     hiLiteIndex = null
     searchInput.focus()
     isVisible = true
-    getDataWeatherSelected(lat, lon)
+    getDataWeatherSelected(name)
   }
 
   /* Navigating over the list of countries using keyboard */
