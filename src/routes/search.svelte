@@ -2,16 +2,17 @@
   import '../app.css'
   import { spring } from 'svelte/motion'
   import { slide } from 'svelte/transition'
-  import { weatherStore } from '../stores/store'
+  import { removeFavorite, weatherStore } from '../stores/store'
   import { itrash } from '../icons'
   import { myslide } from '../utils/myslide'
   import { getWeatherFrom, searchCity } from '../services/weather'
   import PreviewCity from '../components/PreviewCity.svelte'
   import SvgIcon from '../components/SvgIcon.svelte'
+
   /* Animations*/
   let coords = spring({ x: 0, y: 0 }, { stiffness: 0.05, damping: 0.5 })
   let selected
-  let current
+  let favoriteId
   let w
 
   function handleSlideStart() {
@@ -31,12 +32,8 @@
     coords.set({ x: 0, y: 0 })
   }
 
-  function deleteContact(id) {
-    coords.set({ x: 0, y: 0 }, { hard: true })
-  }
-
   $: side = $coords.x >= (w / 2) * 1 ? 'left' : 'right'
-  $: side === 'left' ? deleteContact(current) : ''
+  $: side === 'left' ? removeFavorite(favoriteId) : ''
 
   /* Data */
   const classes =
@@ -55,7 +52,6 @@
   const handleChange = async () => {
     if (city.length > 2) {
       const response = await searchCity(city)
-      // console.log(response)
       filteredCities = response
     }
   }
@@ -149,7 +145,7 @@
   </section>
   <!-- Favorites -->
   <section class="w-full flex flex-col gap-6">
-    {#each $weatherStore as { weather, forecast }, index}
+    {#each $weatherStore as { id, weather, forecast }, index}
       <!--- Weather Item-->
       <div
         out:slide={{ duration: 500 }}
@@ -161,11 +157,13 @@
           bind:offsetWidth={w}
           use:myslide
           on:slidestart={() => {
-            ;(selected = index), (current = index)
+            selected = index
+            favoriteId = id
             handleSlideStart
           }}
           on:slidemove={handleSlideMove}
           on:slideend={handleSlideEnd}
+          style="transform: translate3d({selected === index ? $coords.x : 0}px, 0, 0)"
         >
           <div class="flex flex-col gap-4 items-center w-full">
             <div class="flex flex-row justify-between w-full">
@@ -185,6 +183,7 @@
       <!--- End Weather Item-->
     {/each}
   </section>
+  <!-- End Favorites -->
 </main>
 
 {#if isVisible}

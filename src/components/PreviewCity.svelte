@@ -1,13 +1,17 @@
 <script>
   import { fade, fly } from 'svelte/transition'
   import { getColorTemperature, getHourFormatted, getMeaningByUvIndex } from '../utils/weather'
-  import { addFavorite, removeFavorite } from '../stores/store'
+  import { addFavorite } from '../stores/store'
   export let weather
   export let forecast
   export let astronomy
 
   const add = () => {
+    const { cityName, region, country } = weather
+    const id = `${cityName}_${region}_${country}`
+
     const weatherData = {
+      id,
       weather,
       astronomy,
       forecast

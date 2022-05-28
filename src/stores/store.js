@@ -17,8 +17,8 @@ export const addFavorite = (newFavorite) => {
   })
 }
 
-export const removeFavorite = (favorite) => {
+export const removeFavorite = (favoriteId) => {
   weatherStore.update((data) => {
-    return data.filter((item) => item.id !== favorite.id)
+    return data.filter((item) => item.id !== favoriteId)
   })
 }
