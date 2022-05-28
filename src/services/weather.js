@@ -118,7 +118,9 @@ export const getForecast = async (q) => {
       }
     })
     const currentDayForecast = getTodayTemperatures(forecastHistoricalData[0].temperatures)
-    const forecastData = { forecastHistoricalData, currentDayForecast }
+    const todayMaxTemp = forecastHistoricalData[0].maxtemp_c
+    const todayMinTemp = forecastHistoricalData[0].mintemp_c
+    const forecastData = { forecastHistoricalData, currentDayForecast, todayMaxTemp, todayMinTemp }
     // Updating data in cache
     await updateCache({ key, value: forecastData })
 

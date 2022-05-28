@@ -1,9 +1,19 @@
 <script>
-  import { getColorTemperature, getHourFormatted, getMeaningByUvIndex } from '../utils/weather'
   import { fade, fly } from 'svelte/transition'
+  import { getColorTemperature, getHourFormatted, getMeaningByUvIndex } from '../utils/weather'
+  import { addFavorite, removeFavorite } from '../stores/store'
   export let weather
   export let forecast
   export let astronomy
+
+  const add = () => {
+    const weatherData = {
+      weather,
+      astronomy,
+      forecast
+    }
+    addFavorite(weatherData)
+  }
 </script>
 
 {#if weather && forecast && astronomy}
@@ -11,6 +21,7 @@
     <div class="bg-black/[.5] fixed top-0 left-0 right-0 bottom-0" />
     <div class="fixed bottom-0 left-0 right-0 overflow-auto h-[90%] rounded-t-2xl">
       <div class="bg-white py-2 px-1">
+        <!-- Buttons -->
         <div class="flex flex-row justify-between mt-3 mx-4">
           <button
             class="font-medium text-sm uppercase border-2 border-solid border-red-400 rounded-lg p-1 text-red-600 cursor-pointer"
@@ -18,7 +29,7 @@
           >
           <button
             class="font-medium text-sm uppercase border-2 border-solid border-blue-400 rounded-lg p-1 text-blue-400 cursor-pointer"
-            >add</button
+            on:click={add}>add</button
           >
         </div>
         <!-- Today data -->

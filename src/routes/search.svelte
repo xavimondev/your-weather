@@ -2,6 +2,7 @@
   import '../app.css'
   import { spring } from 'svelte/motion'
   import { slide } from 'svelte/transition'
+  import { weatherStore } from '../stores/store'
   import { itrash } from '../icons'
   import { myslide } from '../utils/myslide'
   import { getWeatherFrom, searchCity } from '../services/weather'
@@ -9,7 +10,7 @@
   import SvgIcon from '../components/SvgIcon.svelte'
   /* Animations*/
   let coords = spring({ x: 0, y: 0 }, { stiffness: 0.05, damping: 0.5 })
-  // let selected
+  let selected
   let current
   let w
 
@@ -63,7 +64,7 @@
     filteredCities = []
   }
 
-  const getWeatherData = async (lat, lon) => {
+  const getDataWeatherSelected = async (lat, lon) => {
     const results = await getWeatherFrom(`${lat},${lon}`)
     const { info, astronomy, forecast } = results
     weather = info
@@ -78,7 +79,7 @@
     hiLiteIndex = null
     searchInput.focus()
     isVisible = true
-    getWeatherData(lat, lon)
+    getDataWeatherSelected(lat, lon)
   }
 
   /* Navigating over the list of countries using keyboard */
@@ -148,41 +149,41 @@
   </section>
   <!-- Favorites -->
   <section class="w-full flex flex-col gap-6">
-    <div
-      out:slide={{ duration: 500 }}
-      class="relative rounded-2xl flex items-center bg-gradient-to-r from-red-500 to-pink-400 w-full h-28 cursor-grab"
-    >
-      <SvgIcon d={itrash} />
+    {#each $weatherStore as { weather, forecast }, index}
+      <!--- Weather Item-->
       <div
-        class="absolute w-full h-full border-2 rounded-2xl bg-slate-100 p-3"
-        bind:offsetWidth={w}
-        use:myslide
-        on:slidestart={() => {
-          // selected = index
-          // current = contact.id
-          handleSlideStart
-        }}
-        on:slidemove={handleSlideMove}
-        on:slideend={handleSlideEnd}
+        out:slide={{ duration: 500 }}
+        class="relative rounded-2xl flex items-center bg-gradient-to-r from-red-500 to-pink-400 w-full h-28 cursor-grab"
       >
-        <div class="flex flex-col gap-4 items-center w-full">
-          <div class="flex flex-row justify-between w-full">
-            <div>
-              <h2 class="font-semibold text-2xl">My Location</h2>
-              <span class="text-gray-500 text-sm">08:56</span>
+        <SvgIcon d={itrash} />
+        <div
+          class="absolute w-full h-full border-2 rounded-2xl bg-slate-100 p-3"
+          bind:offsetWidth={w}
+          use:myslide
+          on:slidestart={() => {
+            ;(selected = index), (current = index)
+            handleSlideStart
+          }}
+          on:slidemove={handleSlideMove}
+          on:slideend={handleSlideEnd}
+        >
+          <div class="flex flex-col gap-4 items-center w-full">
+            <div class="flex flex-row justify-between w-full">
+              <h2 class="font-semibold text-md md:text-xl">{weather.cityName}</h2>
+              <h2 class="text-3xl md:text-5xl">{weather.temperature}º</h2>
             </div>
-            <h2 class="text-5xl">16º</h2>
-          </div>
-          <div class="flex flex-row justify-between w-full">
-            <span class="text-gray-500 text-sm">Mostly Clear</span>
-            <div>
-              <span class="text-sm">H:21º</span>
-              <span class="text-sm">L:16º</span>
+            <div class="flex flex-row justify-between w-full">
+              <span class="text-gray-500 text-sm">{weather.condition}</span>
+              <div>
+                <span class="text-sm">H:{forecast.todayMaxTemp}º</span>
+                <span class="text-sm">L:{forecast.todayMinTemp}º</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <!--- End Weather Item-->
+    {/each}
   </section>
 </main>
 
