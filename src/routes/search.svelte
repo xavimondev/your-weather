@@ -1,5 +1,4 @@
 <script>
-  import '../app.css'
   import { spring } from 'svelte/motion'
   import { slide } from 'svelte/transition'
   import { removeFavorite, weatherStore } from '../stores/store'

@@ -1,5 +1,4 @@
 <script>
-  import '../app.css'
   import { getWeatherFrom } from '../services/weather'
   import HourlyForecast from '../components/HourlyForecast.svelte'
   import ThreeDayForecast from '../components/ThreeDayForecast.svelte'
