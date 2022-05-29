@@ -129,7 +129,7 @@
     </form>
     <div class="relative z-10">
       {#if filteredCities.length > 0}
-        <ul class="p-3 w-full border border-solid bg-slate-100 rounded-b-lg shadow-sm">
+        <ul class="p-3 w-full border border-solid bg-slate-100 rounded-b-lg shadow-sm list-results">
           {#each filteredCities as city, i}
             <li
               class={`${classes} ${i === hiLiteIndex ? 'bg-slate-200' : ''}`}
