@@ -1,118 +1,38 @@
 <script>
   import '../app.css'
-  import { getColorTemperature, getHourFormatted, getMeaningByUvIndex } from '../utils/weather'
-  import { getAstronomy, getForecast, getWeatherFrom } from '../services/weather'
+  import { getWeatherFrom } from '../services/weather'
+  import HourlyForecast from '../components/HourlyForecast.svelte'
+  import ThreeDayForecast from '../components/ThreeDayForecast.svelte'
+  import TodayWeather from '../components/TodayWeather.svelte'
+  import Indicators from '../components/Indicators.svelte'
   const weatherPromise = getWeatherFrom('Trujillo')
-  // const astronomyPromise = getAstronomy('Trujillo')
-  // const forecastPromise = getForecast('Trujillo')
 </script>
 
 <svelte:head>
   <title>Weather</title>
 </svelte:head>
 
-{#await weatherPromise then weather}
+{#await weatherPromise then { info, forecast, astronomy }}
   <main class="max-h-screen mx-5 my-12">
-    <!-- Today data -->
-    <section class="text-center mt-6 flex flex-col gap-4 mb-10">
-      <h2 class="text-3xl">{weather.info.cityName}</h2>
-      <h1 class="text-6xl">{weather.info.temperature}º</h1>
-      <h4>{weather.info.condition}</h4>
-    </section>
-    <!-- Hourly Forecast -->
-    <section class="border-2 border-cyan-200 rounded-2xl p-4 mb-3">
-      <header class="uppercase text-sm font-semibold mb-4 border-b border-cyan-500 pb-3">
-        hourly forecast
-      </header>
-      <ul class="flex gap-5 overflow-x-scroll max-w-full">
-        {#each weather.forecast.currentDayForecast as { temp, icon, condition, hour }, i}
-          <li class="min-w-[64px] min-h-[110px]">
-            <ul class="text-center">
-              <li class="font-semibold">{i === 0 ? 'Now' : getHourFormatted(hour)}</li>
-              <li>
-                <img src={icon} alt={condition} />
-              </li>
-              <li class="font-bold text-lg">{temp}º</li>
-            </ul>
-          </li>
-        {/each}
-      </ul>
-    </section>
-    <!-- 3 Day Forecast -->
-    <section class="border-2 border-cyan-200 rounded-2xl p-4 mb-3">
-      <header class="uppercase text-sm font-semibold mb-4 border-b border-cyan-500 pb-3">
-        3-day-forecast
-      </header>
-      <div class="flex flex-col gap-4 divide-y divide-blue-200">
-        {#each weather.forecast.forecastHistoricalData as { date, icon, mintemp_c, maxtemp_c, temperatures }}
-          <div class="flex justify-between items-center w-full h-10 three-forecast-item">
-            <span class="font-semibold">{date}</span>
-            <img src={icon} width="48" height="48" alt="sunny" />
-            <div class="flex justify-between gap-1 items-center">
-              <span>{mintemp_c}º</span>
-              <div class="flex flex-row rounded-xl border border-t-gray-50">
-                {#each temperatures as { temp }}
-                  <span class={`w-1 h-1 ${getColorTemperature(temp)}`} />
-                {/each}
-              </div>
-              <span class="font-semibold">{maxtemp_c}º</span>
-            </div>
-          </div>
-        {/each}
-      </div>
-    </section>
-    <!-- Other indicators-->
-    <section class="grid gap-4 grid-cols-2 grid-rows-4">
-      <!-- UV Index  -->
-      <div class="border-2 border-cyan-200 rounded-2xl p-4 uv-index">
-        <header class="uppercase text-sm font-semibold mb-2 pb-1">uv index</header>
-        <div class="">
-          <h1 class="font-bold text-2xl uv-index-value">{weather.info.uvindex}</h1>
-          <h2 class="font-semibold text-md">
-            {getMeaningByUvIndex(weather.info.uvindex)}
-          </h2>
-        </div>
-      </div>
-      <!-- Sunset -->
-      <div class="border-2 border-cyan-200 rounded-2xl p-4 sunset">
-        <header class="uppercase text-sm font-semibold mb-2 pb-1">sunset</header>
-        <div class="flex flex-col gap-3">
-          <h1 class="font-bold text-2xl sunset-value">{weather.astronomy.sunset}</h1>
-          <h2 class="text-sm sunrise-value">Sunrise: {weather.astronomy.sunrise}</h2>
-        </div>
-      </div>
-      <!-- Wind -->
-      <div class="border-2 border-cyan-200 rounded-2xl p-4 wind">
-        <header class="uppercase text-sm font-semibold mb-2 pb-1">wind</header>
-        <h1 class="font-bold text-2xl wind-value">{weather.info.wind} km/h</h1>
-      </div>
-      <!-- Precipitation -->
-      <div class="border-2 border-cyan-200 rounded-2xl p-4 precipitation">
-        <header class="uppercase text-sm font-semibold mb-2 pb-1">precipitation</header>
-        <h1 class="font-bold text-2xl precipitation-value">{weather.info.precipitation} mm</h1>
-        <h2 class="font-semibold text-md">in last 24 hours</h2>
-      </div>
-      <!-- Feels like -->
-      <div class="border-2 border-cyan-200 rounded-2xl p-4 feels-like">
-        <header class="uppercase text-sm font-semibold mb-2 pb-1">feels like</header>
-        <h1 class="font-bold text-2xl feels-like-value">{weather.info.feelslike}º</h1>
-      </div>
-      <!-- Humidity -->
-      <div class="border-2 border-cyan-200 rounded-2xl p-4 humidity">
-        <header class="uppercase text-sm font-semibold mb-2 pb-1">humidity</header>
-        <h1 class="font-bold text-2xl humidity-value">{weather.info.humidity}%</h1>
-      </div>
-      <!-- Visibility -->
-      <div class="border-2 border-cyan-200 rounded-2xl p-4 visibility">
-        <header class="uppercase text-sm font-semibold mb-2 pb-1">visibility</header>
-        <h1 class="font-bold text-2xl visibility-value">{weather.info.visibility} km</h1>
-      </div>
-      <!-- Pressure -->
-      <div class="border-2 border-cyan-200 rounded-2xl p-4 pressure">
-        <header class="uppercase text-sm font-semibold mb-4 pb-1">pressure</header>
-        <h1 class="font-bold text-2xl pressure-value">{weather.info.pressure} mb</h1>
-      </div>
-    </section>
+    <TodayWeather
+      cityName={info.cityName}
+      condition={info.condition}
+      temperature={info.temperature}
+    />
+    <HourlyForecast currentDayForecast={forecast.currentDayForecast} />
+    <ThreeDayForecast forecastHistoricalData={forecast.forecastHistoricalData} />
+    <!-- TODO: Improve this weird component /> -->
+    <Indicators
+      uvindex={info.uvindex}
+      sunset={astronomy.sunset}
+      sunrise={astronomy.sunrise}
+      wind={info.wind}
+      precipitation={info.precipitation}
+      feelslike={info.feelslike}
+      humidity={info.humidity}
+      visibility={info.visibility}
+      pressure={info.pressure}
+    />
   </main>
   <nav class="fixed bottom-0 z-50 flex  w-full gap-6 p-2 bg-gray-600 justify-between">
     <a
