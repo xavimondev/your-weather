@@ -1,6 +1,6 @@
 <script>
   import Favorites from '../components/Favorites.svelte'
-  import PreviewCity from '../components/PreviewCity.svelte'
+  import PreviewWeather from '../components/PreviewWeather.svelte'
   import SearchMain from '../components/Search/SearchMain.svelte'
 
   // Result of promises
@@ -21,5 +21,5 @@
 </main>
 
 {#if isVisible}
-  <PreviewCity {weather} forecast={forecastData} astronomy={astronomyData} />
+  <PreviewWeather {weather} forecast={forecastData} astronomy={astronomyData} />
 {/if}
