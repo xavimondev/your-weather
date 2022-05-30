@@ -13,7 +13,7 @@ weatherStore.subscribe((data) => {
 
 export const addFavorite = (newFavorite) => {
   weatherStore.update((data) => {
-    return [...data, newFavorite]
+    return [newFavorite, ...data]
   })
 }
 
