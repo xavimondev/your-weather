@@ -21,5 +21,5 @@
 </main>
 
 {#if isVisible}
-  <PreviewWeather {weather} forecast={forecastData} astronomy={astronomyData} />
+  <PreviewWeather {weather} forecast={forecastData} astronomy={astronomyData} bind:isVisible />
 {/if}

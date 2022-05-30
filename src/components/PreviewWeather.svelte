@@ -2,9 +2,12 @@
   import { fade, fly } from 'svelte/transition'
   import { getColorTemperature, getHourFormatted, getMeaningByUvIndex } from '../utils/weather'
   import { addFavorite } from '../stores/store'
+
+  // Props
   export let weather
   export let forecast
   export let astronomy
+  export let isVisible
 
   const add = () => {
     const { cityName, region, country } = weather
@@ -17,6 +20,12 @@
       forecast
     }
     addFavorite(weatherData)
+    cancel()
+  }
+
+  // Close modal
+  const cancel = () => {
+    isVisible = false
   }
 </script>
 
@@ -29,7 +38,7 @@
         <div class="flex flex-row justify-between mt-3 mx-4">
           <button
             class="font-medium text-sm uppercase border-2 border-solid border-red-400 rounded-lg p-1 text-red-600 cursor-pointer"
-            >cancel</button
+            on:click={cancel}>cancel</button
           >
           <button
             class="font-medium text-sm uppercase border-2 border-solid border-blue-400 rounded-lg p-1 text-blue-400 cursor-pointer"
