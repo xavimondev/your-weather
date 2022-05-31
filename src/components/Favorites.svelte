@@ -34,7 +34,7 @@
 </script>
 
 <!-- Favorites -->
-<section class="w-full flex flex-col gap-6">
+<section class="w-full flex flex-col gap-6 mt-20">
   {#each $weatherStore as { id, weather, forecast }, index}
     <!--- Weather Item-->
     <div

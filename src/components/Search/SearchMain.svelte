@@ -47,7 +47,9 @@
 </script>
 
 <!-- Search box -->
-<section class="mb-8 w-full z-30">
-  <Form bind:city {handleChange} />
-  <Results {filteredCities} {setInputValue} {hiLiteIndex} />
+<section class="relative z-10">
+  <div class="absolute w-full">
+    <Form bind:city {handleChange} />
+    <Results {filteredCities} {setInputValue} {hiLiteIndex} />
+  </div>
 </section>

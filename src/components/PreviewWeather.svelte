@@ -32,7 +32,7 @@
 {#if weather && forecast && astronomy}
   <div class="mx-1" in:fly={{ y: 200, duration: 200 }} out:fade>
     <div class="bg-black/[.5] fixed top-0 left-0 right-0 bottom-0" />
-    <div class="fixed bottom-0 left-0 right-0 overflow-auto h-[90%] rounded-t-2xl">
+    <div class="z-20 fixed bottom-0 left-0 right-0 overflow-auto h-[90%] rounded-t-2xl">
       <div class="bg-white py-2 px-1">
         <!-- Buttons -->
         <div class="flex flex-row justify-between mt-3 mx-4">
