@@ -82,9 +82,7 @@ const getTemperaturesByHour = (hours = []) =>
     condition: h.condition.text
   }))
 
-const getTodayTemperatures = (todayForecast = []) => {
-  // Every position of array is hour. Start at 0 and finish at 23
-  const currentHourIndex = new Date().getHours()
+const getTodayTemperatures = (todayForecast = [], currentHourIndex) => {
   // Copy of current today's forecast
   const todayForecastData = [...todayForecast]
   // Extract elapsed hours less current hour until last
@@ -102,9 +100,11 @@ export const getForecast = async (q) => {
     const response = await fetch(`${RAPIDAPI_HOST}forecast.json?q=${query}&days=3`, FETCH_OPTIONS)
     const data = await response.json()
     const {
-      forecast: { forecastday }
+      forecast: { forecastday },
+      location: { localtime }
     } = data
-
+    const resDate = localtime.split(' ')
+    const weirdHour = resDate[1].split(':')[0]
     const forecastHistoricalData = forecastday.map((fv) => {
       const { date, day, hour } = fv
       const { maxtemp_c, mintemp_c, condition } = day
@@ -118,7 +118,11 @@ export const getForecast = async (q) => {
         temperatures: temperaturesByHour
       }
     })
-    const currentDayForecast = getTodayTemperatures(forecastHistoricalData[0].temperatures)
+
+    const currentDayForecast = getTodayTemperatures(
+      forecastHistoricalData[0].temperatures,
+      weirdHour
+    )
     const todayMaxTemp = forecastHistoricalData[0].maxtemp_c
     const todayMinTemp = forecastHistoricalData[0].mintemp_c
     const forecastData = { forecastHistoricalData, currentDayForecast, todayMaxTemp, todayMinTemp }
