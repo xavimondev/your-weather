@@ -1,6 +1,7 @@
 <script>
   export let city
   export let handleChange
+  export let searchInput
 </script>
 
 <form autocomplete="off" on:submit={(e) => e.preventDefault()}>
@@ -19,6 +20,7 @@
     </span>
     <input
       type="search"
+      bind:this={searchInput}
       bind:value={city}
       on:input={handleChange}
       class="pr-3 pl-10 py-2 rounded-lg w-full border border-gray-300 text-md placeholder-slate-400 outline-none"

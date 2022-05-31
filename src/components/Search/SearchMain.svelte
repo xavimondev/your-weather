@@ -10,6 +10,7 @@
   export let isVisible
 
   // Get reference to a DOM node, in this case I will use to focus input
+  let searchInput
   let city = ''
   // List of cities
   let filteredCities = []
@@ -19,6 +20,19 @@
 
   $: if (!city) {
     filteredCities = []
+  }
+
+  // When user close the modal, it's time to reset input and all weather data
+  $: if (!isVisible) {
+    if (searchInput) {
+      console.log('Closing modal and resetting input')
+      searchInput.value = ''
+      searchInput.focus()
+
+      weather = null
+      astronomyData = null
+      forecastData = null
+    }
   }
 
   const handleChange = async () => {
@@ -49,7 +63,7 @@
 <!-- Search box -->
 <section class="relative z-10">
   <div class="absolute w-full">
-    <Form bind:city {handleChange} />
+    <Form bind:searchInput bind:city {handleChange} />
     <Results {filteredCities} {setInputValue} {hiLiteIndex} />
   </div>
 </section>
