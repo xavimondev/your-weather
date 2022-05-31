@@ -2,6 +2,7 @@ import { getKeyFormatted } from '../utils/getKeyFormatted'
 import { DEFAULT_QUERY, FETCH_OPTIONS, RAPIDAPI_HOST } from '../constants'
 
 import { searchCache, updateCache } from './cache'
+import { getNameOfDay } from '../utils/dates'
 
 export const getWeatherFrom = async (query = DEFAULT_QUERY) => {
   const response = await fetch(`${RAPIDAPI_HOST}current.json?q=${query}`, FETCH_OPTIONS)
@@ -110,7 +111,7 @@ export const getForecast = async (q) => {
       const { icon } = condition
       const temperaturesByHour = getTemperaturesByHour(hour)
       return {
-        date,
+        date: getNameOfDay(date),
         icon,
         mintemp_c: Math.round(mintemp_c),
         maxtemp_c: Math.round(maxtemp_c),

@@ -11,3 +11,17 @@ export const getSecondsUntilEndDay = () => {
     SECONDS_PER_DAY - SECONDS_ELAPSED_HOUR - SECONDS_ELAPSED_MINUTE - SECONDS_ELAPSED
   return secondsUntilEndOfDate
 }
+
+// TODO: Improve weird logic
+const formatDate = (date) => {
+  const [year, month, day] = date.split('-')
+  const resultDate = [month, day, year].join('-')
+  return resultDate
+}
+
+export const getNameOfDay = (date) => {
+  const resultDate = formatDate(date)
+  const d = new Date(resultDate)
+  const dayName = d.toLocaleString('en-US', { weekday: 'short' })
+  return dayName
+}
