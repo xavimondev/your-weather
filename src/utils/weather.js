@@ -18,3 +18,10 @@ export const getColorTemperature = (temp) => {
 }
 
 export const getHourFormatted = (hour) => (hour < 10 ? `0${hour}` : hour)
+
+export const extractHourFromDate = (localtime) => {
+  const resDate = localtime.split(' ')
+  const weirdHour = resDate[1].split(':')[0]
+
+  return weirdHour
+}
