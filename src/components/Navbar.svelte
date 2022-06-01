@@ -1,4 +1,4 @@
-<nav class="fixed bottom-0 z-50 flex  w-full gap-6 p-2 bg-gray-600 justify-between">
+<nav class="fixed bottom-0 z-50 flex w-full gap-6 p-2 bg-white/5 back-filter justify-between">
   <a
     class="ring-gray-900 p-2 rounded-lg flex text-xs flex-col items-center gap-1 transition hover:text-yellow-300 text-white"
     href="/leaderboard"

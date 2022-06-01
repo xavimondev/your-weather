@@ -1,7 +1,7 @@
 import { getKeyFormatted } from '../utils/getKeyFormatted'
 import { DEFAULT_QUERY, FETCH_OPTIONS, RAPIDAPI_HOST } from '../constants'
 
-import { searchCache, updateCache } from './cache'
+// import { searchCache, updateCache } from './cache'
 import { getNameOfDay } from '../utils/dates'
 
 export const getWeatherFrom = async (query = DEFAULT_QUERY) => {
@@ -52,26 +52,26 @@ export const getWeatherFrom = async (query = DEFAULT_QUERY) => {
 }
 
 export const getAstronomy = async (q) => {
-  const { query, key } = q
+  const { query } = q
   // Looking for data on cache
-  const result = await searchCache(key)
-  if (!result) {
-    // Fetching data from API
-    const response = await fetch(`${RAPIDAPI_HOST}astronomy.json?q=${query}`, FETCH_OPTIONS)
-    const { astronomy } = await response.json()
-    const { astro } = astronomy
-    const { sunrise, sunset } = astro
-    const astronomyData = {
-      sunrise,
-      sunset
-    }
-    // Updating data in cache
-    await updateCache({ key, value: astronomyData })
-
-    return astronomyData
+  //const result = await searchCache(key)
+  //if (!result) {
+  // Fetching data from API
+  const response = await fetch(`${RAPIDAPI_HOST}astronomy.json?q=${query}`, FETCH_OPTIONS)
+  const { astronomy } = await response.json()
+  const { astro } = astronomy
+  const { sunrise, sunset } = astro
+  const astronomyData = {
+    sunrise,
+    sunset
   }
+  // Updating data in cache
+  //await updateCache({ key, value: astronomyData })
 
-  return result
+  return astronomyData
+  //}
+
+  //return result
 }
 
 const getTemperaturesByHour = (hours = []) =>
@@ -93,45 +93,42 @@ const getTodayTemperatures = (todayForecast = [], currentHourIndex) => {
 }
 
 export const getForecast = async (q) => {
-  const { query, key } = q
+  const { query } = q
   // Looking for data on cache
-  const result = await searchCache(key)
-  if (!result) {
-    const response = await fetch(`${RAPIDAPI_HOST}forecast.json?q=${query}&days=3`, FETCH_OPTIONS)
-    const data = await response.json()
-    const {
-      forecast: { forecastday },
-      location: { localtime }
-    } = data
-    const resDate = localtime.split(' ')
-    const weirdHour = resDate[1].split(':')[0]
-    const forecastHistoricalData = forecastday.map((fv) => {
-      const { date, day, hour } = fv
-      const { maxtemp_c, mintemp_c, condition } = day
-      const { icon } = condition
-      const temperaturesByHour = getTemperaturesByHour(hour)
-      return {
-        date: getNameOfDay(date),
-        icon,
-        mintemp_c: Math.round(mintemp_c),
-        maxtemp_c: Math.round(maxtemp_c),
-        temperatures: temperaturesByHour
-      }
-    })
+  //const result = await searchCache(key)
+  //if (!result) {
+  const response = await fetch(`${RAPIDAPI_HOST}forecast.json?q=${query}&days=3`, FETCH_OPTIONS)
+  const data = await response.json()
+  const {
+    forecast: { forecastday },
+    location: { localtime }
+  } = data
+  const resDate = localtime.split(' ')
+  const weirdHour = resDate[1].split(':')[0]
+  const forecastHistoricalData = forecastday.map((fv) => {
+    const { date, day, hour } = fv
+    const { maxtemp_c, mintemp_c, condition } = day
+    const { icon } = condition
+    const temperaturesByHour = getTemperaturesByHour(hour)
+    return {
+      date: getNameOfDay(date),
+      icon,
+      mintemp_c: Math.round(mintemp_c),
+      maxtemp_c: Math.round(maxtemp_c),
+      temperatures: temperaturesByHour
+    }
+  })
 
-    const currentDayForecast = getTodayTemperatures(
-      forecastHistoricalData[0].temperatures,
-      weirdHour
-    )
-    const todayMaxTemp = forecastHistoricalData[0].maxtemp_c
-    const todayMinTemp = forecastHistoricalData[0].mintemp_c
-    const forecastData = { forecastHistoricalData, currentDayForecast, todayMaxTemp, todayMinTemp }
-    // Updating data in cache
-    await updateCache({ key, value: forecastData })
+  const currentDayForecast = getTodayTemperatures(forecastHistoricalData[0].temperatures, weirdHour)
+  const todayMaxTemp = forecastHistoricalData[0].maxtemp_c
+  const todayMinTemp = forecastHistoricalData[0].mintemp_c
+  const forecastData = { forecastHistoricalData, currentDayForecast, todayMaxTemp, todayMinTemp }
+  // Updating data in cache
+  //await updateCache({ key, value: forecastData })
 
-    return forecastData
-  }
-  return result
+  return forecastData
+  //}
+  //return result
 }
 
 export const searchCity = async (query = '') => {

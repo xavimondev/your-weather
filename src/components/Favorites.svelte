@@ -1,4 +1,5 @@
 <script>
+  // I based on https://svelte.dev/repl/f649d828badf468cacad8bdc8b4088a3?version=3.29.0
   import { slide } from 'svelte/transition'
   import { spring } from 'svelte/motion'
   import { removeFavorite, weatherStore } from '../stores/store'
@@ -29,8 +30,13 @@
     coords.set({ x: 0, y: 0 })
   }
 
+  const deleteFavorite = (id) => {
+    coords.set({ x: 0, y: 0 }, { hard: true })
+    removeFavorite(id)
+  }
+
   $: side = $coords.x >= (w / 2) * 1 ? 'left' : 'right'
-  $: side === 'left' ? removeFavorite(favoriteId) : ''
+  $: side === 'left' ? deleteFavorite(favoriteId) : ''
 </script>
 
 <!-- Favorites -->

@@ -24,13 +24,25 @@
 
 <svelte:head>
   <title>Weather</title>
+  <!-- I just wanted to put this style on this page, so I followed that comment ⬇️-->
+  <!-- Explanation: https://stackoverflow.com/questions/61909748/updating-body-background-color-in-sapper -->
+  <style>
+    body {
+      background-color: #29539b;
+      background-image: linear-gradient(315deg, #29539b 0%, #1e3b70 74%);
+      color: white;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      height: 100%;
+    }
+  </style>
 </svelte:head>
 
 {#if loading}
   <h1>Loading</h1>
 {:else}
   {#await weatherPromise then { info, forecast, astronomy }}
-    <main class="max-h-screen mx-5 my-12">
+    <main class="max-h-screen mx-5 mt-12 mb-80">
       <TodayWeather
         cityName={info.cityName}
         condition={info.condition}
@@ -56,3 +68,12 @@
     <span>{error.message}</span>
   {/await}
 {/if}
+
+<style>
+  /* I added this class because backdrop utilities are not applying correctly
+  Issue here: https://github.com/tailwindlabs/tailwindcss/discussions/7044
+  */
+  :global(.back-filter) {
+    backdrop-filter: blur(5px) brightness(110%);
+  }
+</style>

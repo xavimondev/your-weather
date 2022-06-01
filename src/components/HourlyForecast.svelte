@@ -5,8 +5,10 @@
 </script>
 
 <!-- Hourly Forecast -->
-<section class="border-2 border-cyan-200 rounded-2xl p-4 mb-3">
-  <header class="uppercase text-sm font-semibold mb-4 border-b border-cyan-500 pb-3">
+<section class="border-none bg-white/5 back-filter rounded-2xl p-4 mb-3">
+  <header
+    class="uppercase text-sm text-gray-300 font-semibold mb-4 border-b border-gray-100/10 pb-3"
+  >
     hourly forecast
   </header>
   <ul class="flex gap-5 overflow-x-scroll max-w-full">
