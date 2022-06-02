@@ -12,25 +12,29 @@
   import Fallback from '../components/Fallbacks/Fallback.svelte'
 
   let loading
-  let weatherPromise
+  let weatherPromise = false
 
+  //TODO: This logic could be better
   const getWeather = async (citySelected) => {
     try {
-      const coords = await getLocation()
-      const city = citySelected === 'your_city' ? coords : citySelected
-      weatherPromise = getWeatherFrom(city)
+      if (citySelected !== 'your_city') {
+        weatherPromise = getWeatherFrom(citySelected)
+      } else {
+        // Show fallback meanwhile browser is giving location
+        loading = true
+        const coords = await getLocation()
+        weatherPromise = getWeatherFrom(coords)
+      }
     } catch (error) {
-      // In this case, user denied the permission to access location,
-      // therefore, I will use the default ip or favorite city on locaslstorage
-      const city = citySelected === 'your_city' ? DEFAULT_QUERY : citySelected
-      weatherPromise = getWeatherFrom(city)
+      // In this case, user denied the permission to access its location,
+      // therefore, I will use the default ip
+      weatherPromise = getWeatherFrom()
     } finally {
       loading = false
     }
   }
 
   $: if ($cityStore) {
-    loading = true
     // console.log(`${$cityStore} has changed`)
     getWeather($cityStore)
   }
