@@ -6,8 +6,9 @@ I've build this app to participate in hackaton organized by 👨‍💻 [midudev
 # Stack ❤️
 
 - **Development**: [SvelteKit](https://kit.svelte.dev/)
-- **Styles**: [Tailwind CSS](https://chakra-ui.com/guides/first-steps)
-- **Uptash - Redis**: [Uptash](https://upstash.com/)
+- **Styles**: [Tailwind CSS](https://tailwindcss.com/)
+- **Cache**: [Redis Uptash](https://upstash.com/)
+- **Testing**: [Playwright](https://playwright.dev/)
 - **Deployment**: [Vercel](https://vercel.com)
 
 # RapidAPI - Project API Keys
