@@ -5,7 +5,7 @@ export const FETCH_OPTIONS = {
     'X-RapidAPI-Key': import.meta.env.VITE_RAPID_KEY
   }
 }
-console.log(FETCH_OPTIONS)
+console.log(process.env.VITE_RAPID_KEY)
 export const RAPIDAPI_HOST = 'https://weatherapi-com.p.rapidapi.com/'
 export const DEFAULT_QUERY = 'auto:ip'
 export const ENDPOINT_API = '/api/weather'
