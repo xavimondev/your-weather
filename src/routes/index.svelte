@@ -7,6 +7,7 @@
   import Indicators from '../components/Indicators.svelte'
   import Navbar from '../components/Navbar.svelte'
   import WeatherEffect from '../components/WeatherEffect.svelte'
+  import Fallback from '../components/Fallbacks/Fallback.svelte'
 
   let loading = true
   let weatherPromise
@@ -29,20 +30,17 @@
   <!-- Explanation: https://stackoverflow.com/questions/61909748/updating-body-background-color-in-sapper -->
   <style>
     body {
-      /* background-color: #29539b; */
-      /* background-image: linear-gradient(315deg, #29539b 0%, #1e3b70 74%); */
       color: white;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      /* height: 100%; */
     }
   </style>
 </svelte:head>
 
 {#if loading}
-  <h1>Loading</h1>
+  <Fallback />
 {:else}
-  {#await weatherPromise then { info, forecast, astronomy }}
+  {#await weatherPromise}
+    <Fallback />
+  {:then { info, forecast, astronomy }}
     <main class="w-full absolute">
       <WeatherEffect {info} {astronomy} />
       <div class="relative z-50 mb-32 mx-5 mt-12">

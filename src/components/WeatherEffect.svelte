@@ -20,10 +20,14 @@
   } else {
     const { isDay, condition } = info
     let weatherConditions = [
-      { is_day: 0, conditions: ['cloudy', 'fog', 'overcast'], component: NightCloudy },
+      {
+        is_day: 0,
+        conditions: ['partly cloudy', 'cloudy', 'fog', 'overcast'],
+        component: NightCloudy
+      },
       { is_day: 0, conditions: ['rain', 'drizzle'], component: NightRainy },
       { is_day: 0, conditions: ['clear', 'light'], component: NightClear },
-      { is_day: 1, conditions: ['cloudy', 'fog'], component: MorningCloudy }
+      { is_day: 1, conditions: ['partly cloudy', 'fog'], component: MorningCloudy }
       // Missing [snow, heavysleet], light
       // { is_day: 0, conditions: ['thundery', 'thunder'], component: MorningCloudy },
     ]
