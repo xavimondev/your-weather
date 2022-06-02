@@ -9,6 +9,7 @@
   export let info
   export let astronomy
 
+  //TODO: Improve all this weird logic ⬇️ and make it more readable
   let componentSelected
   let hourSunset = convert12to24(astronomy.sunset)
   let currentHour = parseInt(info.weirdHour)
@@ -22,18 +23,30 @@
     let weatherConditions = [
       {
         is_day: 0,
-        conditions: ['partly cloudy', 'cloudy', 'fog', 'overcast'],
+        conditions: ['partly cloudy', 'cloudy', 'fog', 'overcast', 'mist'],
         component: NightCloudy
       },
       { is_day: 0, conditions: ['rain', 'drizzle'], component: NightRainy },
       { is_day: 0, conditions: ['clear', 'light'], component: NightClear },
-      { is_day: 1, conditions: ['partly cloudy', 'fog'], component: MorningCloudy }
+      {
+        is_day: 1,
+        conditions: ['partly cloudy', 'fog', 'overcast', 'mist'],
+        component: MorningCloudy
+      }
       // Missing [snow, heavysleet], light
       // { is_day: 0, conditions: ['thundery', 'thunder'], component: MorningCloudy },
     ]
     componentSelected = weatherConditions.find(
       ({ is_day, conditions }) => is_day === isDay && conditions.includes(condition.toLowerCase())
-    ).component
+    )
+
+    if (!componentSelected) {
+      console.log('Render default component')
+      componentSelected = isDay ? MorningCloudy : NightClear
+    } else {
+      console.log('Render custom component')
+      componentSelected = componentSelected.component
+    }
   }
 </script>
 
