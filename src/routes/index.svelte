@@ -1,5 +1,7 @@
 <script>
   import { getLocation } from '../utils/getLocation'
+  import { DEFAULT_QUERY } from '../constants'
+  import { cityStore } from '../stores/favorite'
   import { getWeatherFrom } from '../services/weather'
   import HourlyForecast from '../components/HourlyForecast.svelte'
   import ThreeDayForecast from '../components/ThreeDayForecast.svelte'
@@ -9,19 +11,29 @@
   import WeatherEffect from '../components/WeatherEffect.svelte'
   import Fallback from '../components/Fallbacks/Fallback.svelte'
 
-  let loading = true
+  let loading
   let weatherPromise
 
-  getLocation()
-    .then((coords) => {
-      weatherPromise = getWeatherFrom(coords)
-    })
-    .catch(() => {
-      weatherPromise = getWeatherFrom()
-    })
-    .finally(() => {
+  const getWeather = async (citySelected) => {
+    try {
+      const coords = await getLocation()
+      const city = citySelected === 'your_city' ? coords : citySelected
+      weatherPromise = getWeatherFrom(city)
+    } catch (error) {
+      // In this case, user denied the permission to access location,
+      // therefore, I will use the default ip or favorite city on locaslstorage
+      const city = citySelected === 'your_city' ? DEFAULT_QUERY : citySelected
+      weatherPromise = getWeatherFrom(city)
+    } finally {
       loading = false
-    })
+    }
+  }
+
+  $: if ($cityStore) {
+    loading = true
+    // console.log(`${$cityStore} has changed`)
+    getWeather($cityStore)
+  }
 </script>
 
 <svelte:head>

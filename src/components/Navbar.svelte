@@ -1,7 +1,18 @@
+<script>
+  import { resetCitySelected } from '../stores/favorite'
+
+  const requestMyLocation = async () => {
+    // The idea is request the user's location again,
+    // however I can reset data on local storage and simulate the change as long as
+    // geolocation is enabled
+    resetCitySelected()
+  }
+</script>
+
 <nav class="fixed bottom-0 z-50 flex w-full gap-6 p-2 bg-white/5 back-filter justify-between">
-  <a
-    class="ring-gray-900 p-2 rounded-lg flex text-xs flex-col items-center gap-1 transition hover:text-yellow-300 text-white"
-    href="/"
+  <button
+    class="ring-gray-900 p-2 bg-none rounded-lg flex text-xs flex-col items-center gap-1 transition hover:text-yellow-300 text-white"
+    on:click={requestMyLocation}
   >
     <svg height="21" viewBox="0 0 21 21" width="21" xmlns="http://www.w3.org/2000/svg"
       ><g
@@ -16,7 +27,7 @@
         /><circle cx="6.5" cy="6.5" r="2.5" /></g
       ></svg
     >
-  </a>
+  </button>
   <a
     class="ring-gray-900 p-2 rounded-lg flex text-xs flex-col items-center gap-1 transition hover:text-yellow-300 text-white"
     href="/search"

@@ -3,6 +3,7 @@
   import { slide } from 'svelte/transition'
   import { spring } from 'svelte/motion'
   import { removeFavorite, weatherStore } from '../stores/store'
+  import { updateCitySelected } from '../stores/favorite'
   import { itrash } from '../icons'
   import { myslide } from '../utils/myslide'
   import SvgIcon from './SvgIcon.svelte'
@@ -45,7 +46,8 @@
     <!--- Weather Item-->
     <div
       out:slide={{ duration: 500 }}
-      class="relative rounded-2xl flex items-center bg-gradient-to-r from-red-500 to-pink-400 w-full h-28 cursor-grab"
+      class="relative rounded-2xl flex items-center bg-gradient-to-r from-red-500 to-pink-400 w-full h-28 cursor-pointer"
+      on:click={updateCitySelected(weather.cityName)}
     >
       <SvgIcon d={itrash} />
       <div
@@ -63,7 +65,7 @@
       >
         <div class="flex flex-col gap-4 items-center w-full">
           <div class="flex flex-row justify-between w-full">
-            <h2 class="font-semibold text-md md:text-xl text-white">{weather.cityName}</h2>
+            <a class="font-semibold text-md md:text-xl text-white" href="/">{weather.cityName}</a>
             <h2 class="text-3xl md:text-5xl text-white">{weather.temperature}º</h2>
           </div>
           <div class="flex flex-row justify-between w-full">

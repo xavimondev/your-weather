@@ -1,4 +1,4 @@
-import { DEFAULT_QUERY, FETCH_OPTIONS, RAPIDAPI_HOST } from '../constants'
+import { FETCH_OPTIONS, RAPIDAPI_HOST } from '../constants'
 
 import {
   getBasicInfoWeather,
@@ -6,7 +6,7 @@ import {
   getTodayTemperatures
 } from '../utils/getWeatherData'
 
-export const getWeatherFrom = async (query = DEFAULT_QUERY) => {
+export const getWeatherFrom = async (query) => {
   const infoAstronomy = await getAstronomy(query)
   const { forecastData, basicInfoWeather } = await getForecast(query)
 
