@@ -49,7 +49,7 @@
     >
       <SvgIcon d={itrash} />
       <div
-        class="absolute w-full h-full border-2 rounded-2xl bg-slate-100 p-3"
+        class="absolute w-full h-full border-2 rounded-2xl border-none bg-[#181b29] p-3"
         bind:offsetWidth={w}
         use:myslide
         on:slidestart={() => {
@@ -63,14 +63,14 @@
       >
         <div class="flex flex-col gap-4 items-center w-full">
           <div class="flex flex-row justify-between w-full">
-            <h2 class="font-semibold text-md md:text-xl">{weather.cityName}</h2>
-            <h2 class="text-3xl md:text-5xl">{weather.temperature}º</h2>
+            <h2 class="font-semibold text-md md:text-xl text-white">{weather.cityName}</h2>
+            <h2 class="text-3xl md:text-5xl text-white">{weather.temperature}º</h2>
           </div>
           <div class="flex flex-row justify-between w-full">
-            <span class="text-gray-500 text-sm">{weather.condition}</span>
+            <span class="text-gray-300 text-sm">{weather.condition}</span>
             <div>
-              <span class="text-sm">H:{forecast.todayMaxTemp}º</span>
-              <span class="text-sm">L:{forecast.todayMinTemp}º</span>
+              <span class="text-sm text-white">H:{forecast.todayMaxTemp}º</span>
+              <span class="text-sm text-white">L:{forecast.todayMinTemp}º</span>
             </div>
           </div>
         </div>

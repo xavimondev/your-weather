@@ -4,7 +4,7 @@
   export let hiLiteIndex
   /* Navigating over the list of countries using keyboard */
   const classes =
-    'mb-2 py-1 px-2 text-sm cursor-pointer font-medium hover:bg-slate-200 hover:rounded-md'
+    'mb-2 py-1 px-2 text-sm text-white cursor-pointer font-medium hover:bg-zinc-700 hover:rounded-md'
 
   const navigateList = (e) => {
     if (e.key === 'ArrowDown' && hiLiteIndex <= filteredCities.length - 1) {
@@ -21,12 +21,12 @@
 
 <svelte:window on:keydown={navigateList} />
 
-<div class="relative z-10">
+<div class="relative z-10 bg-zinc-800">
   {#if filteredCities.length > 0}
-    <ul class="p-3 w-full border border-solid bg-slate-100 rounded-b-lg shadow-sm list-results">
+    <ul class="p-3 w-full  bg-zinc-800 rounded-b-lg shadow-sm list-results">
       {#each filteredCities as city, i}
         <li
-          class={`${classes} ${i === hiLiteIndex ? 'bg-slate-200' : ''}`}
+          class={`${classes} ${i === hiLiteIndex ? 'bg-zinc-700 rounded-md' : ''}`}
           on:click={() => setInputValue(city)}
         >
           {city.name}, {city.region}, {city.country}

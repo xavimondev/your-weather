@@ -12,10 +12,16 @@
 
 <svelte:head>
   <title>Search</title>
+  <style>
+    body {
+      background: #111111;
+      overflow: hidden;
+    }
+  </style>
 </svelte:head>
 
 <main class="max-h-screen mx-5 my-12">
-  <h1 class="font-bold text-4xl mb-4">Search</h1>
+  <h1 class="font-bold text-4xl mb-4 text-white">Search</h1>
   <SearchMain bind:weather bind:astronomyData bind:forecastData bind:isVisible />
   <Favorites />
 </main>
