@@ -1,8 +1,13 @@
 import { getNameOfDay } from './dates'
+import { extractHourFromDate } from './weather'
 
 export const getBasicInfoWeather = (data) => {
   const { location, current } = data
-  const { country, name, region } = location
+  const { country, name, region, localtime } = location
+
+  //2022-05-31 8:45 -> return 8
+  const weirdHour = extractHourFromDate(localtime)
+
   const {
     temp_c,
     wind_kph,
@@ -30,7 +35,8 @@ export const getBasicInfoWeather = (data) => {
     uvindex: uv,
     humidity,
     precipitation: precip_mm,
-    isDay: is_day
+    isDay: is_day,
+    weirdHour
   }
 
   return basicInfoWeather

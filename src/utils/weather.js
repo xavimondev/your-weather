@@ -25,3 +25,14 @@ export const extractHourFromDate = (localtime) => {
 
   return weirdHour
 }
+
+/* Create a function to convert 12 hours to 24 hours, Thanks copilot for this snippet */
+export const convert12to24 = (time) => {
+  const [hours, minutes] = time.split(':')
+  const [, period] = minutes.split(' ')
+  const newHour = parseInt(hours)
+  if (period === 'PM') {
+    return newHour + 12
+  }
+  return newHour
+}

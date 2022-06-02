@@ -1,6 +1,5 @@
 import { DEFAULT_QUERY, FETCH_OPTIONS, RAPIDAPI_HOST } from '../constants'
 
-import { extractHourFromDate } from '../utils/weather'
 import {
   getBasicInfoWeather,
   getForecastHistoricalData,
@@ -36,19 +35,18 @@ export const getForecast = async (query) => {
   const response = await fetch(`${RAPIDAPI_HOST}forecast.json?q=${query}&days=3`, FETCH_OPTIONS)
   const data = await response.json()
   const {
-    forecast: { forecastday },
-    location
+    forecast: { forecastday }
   } = data
 
   const basicInfoWeather = getBasicInfoWeather(data)
 
-  const { localtime } = location
-  //2022-05-31 8:45 -> return 8
-  const weirdHour = extractHourFromDate(localtime)
   // Get forecast for today and next two days
   const forecastHistoricalData = getForecastHistoricalData(forecastday)
 
-  const currentDayForecast = getTodayTemperatures(forecastHistoricalData[0].temperatures, weirdHour)
+  const currentDayForecast = getTodayTemperatures(
+    forecastHistoricalData[0].temperatures,
+    basicInfoWeather.weirdHour
+  )
   const todayMaxTemp = forecastHistoricalData[0].maxtemp_c
   const todayMinTemp = forecastHistoricalData[0].mintemp_c
   const forecastData = { forecastHistoricalData, currentDayForecast, todayMaxTemp, todayMinTemp }

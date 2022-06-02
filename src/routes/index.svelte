@@ -6,6 +6,7 @@
   import TodayWeather from '../components/TodayWeather.svelte'
   import Indicators from '../components/Indicators.svelte'
   import Navbar from '../components/Navbar.svelte'
+  import WeatherEffect from '../components/WeatherEffect.svelte'
 
   let loading = true
   let weatherPromise
@@ -28,12 +29,12 @@
   <!-- Explanation: https://stackoverflow.com/questions/61909748/updating-body-background-color-in-sapper -->
   <style>
     body {
-      background-color: #29539b;
-      background-image: linear-gradient(315deg, #29539b 0%, #1e3b70 74%);
+      /* background-color: #29539b; */
+      /* background-image: linear-gradient(315deg, #29539b 0%, #1e3b70 74%); */
       color: white;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      height: 100%;
+      /* height: 100%; */
     }
   </style>
 </svelte:head>
@@ -42,28 +43,31 @@
   <h1>Loading</h1>
 {:else}
   {#await weatherPromise then { info, forecast, astronomy }}
-    <main class="max-h-screen mx-5 mt-12 mb-80">
-      <TodayWeather
-        cityName={info.cityName}
-        condition={info.condition}
-        temperature={info.temperature}
-      />
-      <HourlyForecast currentDayForecast={forecast.currentDayForecast} />
-      <ThreeDayForecast forecastHistoricalData={forecast.forecastHistoricalData} />
-      <!-- TODO: Improve this weird component /> -->
-      <Indicators
-        uvindex={info.uvindex}
-        sunset={astronomy.sunset}
-        sunrise={astronomy.sunrise}
-        wind={info.wind}
-        precipitation={info.precipitation}
-        feelslike={info.feelslike}
-        humidity={info.humidity}
-        visibility={info.visibility}
-        pressure={info.pressure}
-      />
+    <main class="w-full absolute">
+      <WeatherEffect {info} {astronomy} />
+      <div class="relative z-50 mb-32 mx-5 mt-12">
+        <TodayWeather
+          cityName={info.cityName}
+          condition={info.condition}
+          temperature={info.temperature}
+        />
+        <HourlyForecast currentDayForecast={forecast.currentDayForecast} />
+        <ThreeDayForecast forecastHistoricalData={forecast.forecastHistoricalData} />
+        <!-- TODO: Improve this weird component /> -->
+        <Indicators
+          uvindex={info.uvindex}
+          sunset={astronomy.sunset}
+          sunrise={astronomy.sunrise}
+          wind={info.wind}
+          precipitation={info.precipitation}
+          feelslike={info.feelslike}
+          humidity={info.humidity}
+          visibility={info.visibility}
+          pressure={info.pressure}
+        />
+      </div>
+      <Navbar />
     </main>
-    <Navbar />
   {:catch error}
     <span>{error.message}</span>
   {/await}
